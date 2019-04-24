@@ -15,9 +15,10 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/test/{id?}', function($id=0) {
-    return view('test',['test'=>$id]);
-});
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+
+Route::get('/exalert/getupdates', 'Exalert@getUpdates');
+Route::get('/exalert/sendmessage/{message?}', 'Exalert@sendMessage');
+Route::get('/exalert/exmo', 'Exalert@exmo');
