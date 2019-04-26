@@ -23,6 +23,10 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+	    //return view('home');
+	    $arr = [2,5,99,23];
+	    $res =  array_shift($arr);
+	    var_dump($res);
+	    print_r($arr);
     }
 }

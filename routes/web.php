@@ -19,6 +19,4 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-Route::get('/exalert/getupdates', 'Exalert@getUpdates');
-Route::get('/exalert/sendmessage/{message?}', 'Exalert@sendMessage');
-Route::get('/exalert/exmo', 'Exalert@exmo');
+Route::get('/exalert/getupdates', 'ExalertController@getUpdates');
