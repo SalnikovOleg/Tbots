@@ -26,17 +26,20 @@ class ExalertController extends Controller
     }
 
     /*
-     * emulate webhook
-     * late to remove post argument and use request
-     */
+    * emulate webhook
+    * late to remove post argument and use request
+    */
     public function webhookHandler()
     {
-       // $update = $this->telegram->commandsHandler(true);
-        //  return $update;
-        return '$$$$$$$$$$$_________#######################---------===';
+        $update = Telegram::commandsHandler(true);
+        return $update;
+             //$data = json_encode($request->all()); 
+            // file_put_contents('/data/data/com.termux/files/home/proj/log.txt', $data);
+           
+           // return $data;
     }
 
-    /*
+    /*j
      *test get update handler
     */
     public function updateHandler($update)
@@ -56,14 +59,4 @@ class ExalertController extends Controller
         Telegram::sendMessage($answer);
     }
 
-/*   public function testWebhook()
-    {
-        $post= '[{"update_id":208026289,"message":{"message_id":450,"from":{"id":809835134,"is_bot":false,"first_name":"oleg","last_name":"S","language_code":"ru"},"chat":{"id":809835134,"first_name":"oleg","last_name":"S","type":"private"},"date":1557728655,"text":"\/help","entities":[{"offset":0,"length":5,"type":"bot_command"}]}}]';
-        $client = new \GuzzleHttp\Client();
-        $response = $client->post(
-                'http://localhost:8000/exalert/webhook/',
-                ['json' => json_decode($post)]
-            );
-        print_r($response->getBody());
-}*/
 }

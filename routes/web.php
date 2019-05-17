@@ -19,6 +19,11 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-Route::get('/exalert/getupdates', 'ExalertController@getUpdates');
-Route::any('/exalert/webhook', 'ExalertController@webhookHandler');
-Route::get('/exalert/testwebhook', 'TestController@testWebhook');
+Route::get('/getupdates', 'ExalertController@getUpdates');
+Route::post('/webhook', 'ExalertController@webhookHandler');
+Route::get('/testwebhook', 'TestController@testWebhook');
+
+Route::get('/test', function () {
+    return view('test');
+});
+Route::post('/test', 'TestController@index');
