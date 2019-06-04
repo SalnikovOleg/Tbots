@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models;
+namespace App\Exalert;
 
 use Illuminate\Database\Eloquent\Model;
 

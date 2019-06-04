@@ -23,7 +23,3 @@ Route::get('/getupdates', 'ExalertController@getUpdates');
 Route::post('/webhook', 'ExalertController@webhookHandler');
 Route::get('/testwebhook', 'TestController@testWebhook');
 
-Route::get('/test', function () {
-    return view('test');
-});
-Route::post('/test', 'TestController@index');

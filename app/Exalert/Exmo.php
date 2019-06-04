@@ -1,5 +1,5 @@
 <?php
-namespace App\Models;
+namespace App\Exalert;
 use GuzzleHttp;
 
 class Exmo {
