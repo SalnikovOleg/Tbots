@@ -7,15 +7,20 @@ class Exmo {
 
     private function ticker() 
     {
-	$client = new \GuzzleHttp\Client();
-	$request=$client->get($this->url);
-	$data = $request->getBody()->getContents();
-	return json_decode($data);
+	    $client = new \GuzzleHttp\Client();
+	    $request=$client->get($this->url);
+	    $data = $request->getBody()->getContents();
+	    return json_decode($data, true);
     }
 
     public function currency($pair='BTC_USD')
     {
-	$currencies = $this->ticker();
-	return $currencies->{$pair};
+        $currencies = $this->ticker();
+        if(isset($currencies[$pair])) {
+            return $currencies[$pair];
+        } else {
+            return array();
+        }
+
     }
 }

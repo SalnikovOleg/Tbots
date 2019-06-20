@@ -1,0 +1,1 @@
+/cur btc usd - Current exchange
