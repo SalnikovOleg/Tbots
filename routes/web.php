@@ -21,5 +21,3 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 Route::get('/getupdates', 'ExalertController@getUpdates');
 Route::post('/webhook', 'ExalertController@webhookHandler');
-Route::get('/testwebhook', 'TestController@testWebhook');
-

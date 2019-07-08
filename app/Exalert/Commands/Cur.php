@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Exalert;
+namespace App\Exalert\Commands;
 
 use App\Exalert\Exmo;
-use App\Exalert\Command;
+use App\Exalert\Commands\Command;
 
 class Cur extends Command
 {
@@ -15,10 +15,10 @@ class Cur extends Command
 
     public function execute($args)
     {
-        $pair = $this->getPair($args);   
+        $pair = self::getPair($args);   
         if (!$pair) {
-            $this->response->text = 'Return Buttons';
-            $this->response->buttons = self::BUTTONS[0];
+            $this->response->text = 'Select pair';
+            $this->response->inline_keyboard = self::BUTTONS;
         } else {
 
             $exmo = new Exmo();
@@ -37,19 +37,20 @@ class Cur extends Command
         return $this;
     }
 
-    private function getPair($args)
+    public static function getPair($args)
     {
         if (count($args)==0) return '';
 
-        if(count($args) > 1) { 
-           return  strtoupper($args[0]) . '_' . strtoupper($args[1]);
-        } 
-
         $args[0] = str_replace('-','_',$args[0]);
         
-        if (strpos($args[0],'_')===false) return '';
-
-        return strtoupper($args[0]);
+        if (strpos($args[0],'_')===false && count($args)>1) { 
+           $result =  strtoupper($args[0]) . '_' . strtoupper($args[1]);
+        }  elseif (strpos($args[0],'_')===false) {
+            $result = '';
+        } else {
+            $result = strtoupper($args[0]);
+        }
+        return $result;
     }
 
 }

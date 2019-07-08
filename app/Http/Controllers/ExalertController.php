@@ -5,9 +5,8 @@
 namespace App\Http\Controllers;
 
 use Telegram;
-use App\Exalert\CommandsMngr;
-use App\Exalerta\TelegramKeyboard as Keyboard;
-//use Telegram\Bot\Keyboard\Keyboard;
+use App\Exalert\Commands\CommandsMngr;
+use App\TelegramKeyboard as Keyboard;
 
 class ExalertController extends Controller
 {	
@@ -26,39 +25,64 @@ class ExalertController extends Controller
     }
 
     /*
-     *test get update handler
-    */
+     * get update handler
+    */ 
     public function webhookHandler($update)
     {
-	    //$update = Telegram::getWebhookUpdate();
-        $message = $update->getMessage();
-        //TODO checkup callback_response and define $messgae
-        //chat_id, user_id, text
-        // print_r($message);
+        //$update = Telegram::getWebhookUpdate();
+        $message = $this->getMessage($update);
         $command = new CommandsMngr($message);
-
+                                    
         if ($command->isExecutable() ) {
             $command->execute();
         }       
+
         $response = $command->getResponse();
+     
         if($response) {
-            $message =['chat_id' => $message->chat->id, 
-                'text' => $response->text,
-               // 'parse_mode'=>'HTML'
-            ];
-            if (count($response->buttons)>0) {
-                $message['reply_markup'] =  Keyboard::make()
-                        ->inline()
-                        ->row(Keyboard::inlineButton($response->buttons));  
-            }
-       // var_dump($message['reply_markup']);
-            //:wq
-            //die();
+            $message['text'] = $response->text;
+            $message['reply_markup'] = $this->getReplyMarkup($response);
+         //  print_r($message);
+         //  die();
             Telegram::sendMessage($message);
+
         } else { 
             echo 'response is empty<br>';
-            var_dump($message->text);
+            var_dump($message['text']);
         }
     }    
 
+    private function getMessage($update)
+    {
+        $message=[
+            'chat_id'=>0, 
+            'user_id'=>0, 
+            'text'=>'',
+            'parse_mode'=>'HTML'
+        ];
+
+        if ($update->isType('callback_query')) {
+            $message['chat_id'] = $update->callbackQuery->from->id;
+            $message['user_id'] = $update->callbackQuery->from->id;
+            $message['text'] = $update->callbackQuery->data;
+        } else {
+            $mess = $update->getMessage();
+            $message['chat_id'] = $mess->chat->id;
+            $message['user_id'] = $mess->from->id;
+            $message['text'] = $mess->text;
+        }
+        return $message;
+    }
+
+    private function getReplyMarkup($response)
+    {
+        if (count($response->inline_keyboard)>0) {
+            return  Keyboard::make()
+                        ->inline()
+                        ->rows($response->inline_keyboard);  
+        } elseif(count($response->keyboard)>0) {
+            return Keyboard::make()->rows($response->keyboard);
+        }
+        return false;
+    }
 }
