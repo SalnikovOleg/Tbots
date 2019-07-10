@@ -3,19 +3,19 @@ namespace App\Exalert;
 use GuzzleHttp;
 
 class Exmo {
-    private $url = 'https://api.exmo.com/v1/ticker/';
+    const URL = 'https://api.exmo.com/v1/ticker/';
 
-    private function ticker() 
+    private static function ticker() 
     {
 	    $client = new \GuzzleHttp\Client();
-	    $request=$client->get($this->url);
+	    $request=$client->get(self::URL);
 	    $data = $request->getBody()->getContents();
 	    return json_decode($data, true);
     }
 
     public function currency($pair='BTC_USD')
     {
-        $currencies = $this->ticker();
+        $currencies = self::ticker();
         if(isset($currencies[$pair])) {
             return $currencies[$pair];
         } else {
@@ -23,5 +23,15 @@ class Exmo {
         }
     }
     
-    
+    public static function getPairsExchange($pairs)
+    {
+        $currencies = self::ticker();
+        $result = array_filter($currencies,
+            function($key) use($pairs){
+                return in_array($key, $pairs);
+            },
+            ARRAY_FILTER_USE_KEY
+        );
+        return $result;
+    }
 }
