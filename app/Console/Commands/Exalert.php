@@ -3,7 +3,7 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
-use App\Exalert\Schedules\CheckCurrencyShedule;
+use App\Exalert\Schedules\ExalertCheckSchedule as ExalertSchedule;
 
 class Exalert extends Command
 {
@@ -31,7 +31,7 @@ class Exalert extends Command
      *
      * @return void
      */
-    public function __construct(CheckCurrencyShedule $schedule)
+    public function __construct(ExalertSchedule $schedule)
     {
         parent::__construct();
         $this->schedule = $schedule;
@@ -45,7 +45,6 @@ class Exalert extends Command
     public function handle()
     {
         $response = $this->schedule->handle();
-
         $this->line($response);
     }
 }
